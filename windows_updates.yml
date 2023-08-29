@@ -1,0 +1,52 @@
+---
+- name: check updates
+  hosts: all
+  become: false
+  gather_facts: yes
+  vars:
+    logDirectory: C:\Users\AppData\Local\Temp\ansibleLogs
+  tasks:
+
+     #Creacion de carpeta de logs
+    - name: Create logs directory
+      ansible.windows.win_file:
+        path: "{{ logDirectory }}"
+        state: directory
+
+    #Buscamos las actualizaciones de seguridad, criticas o acumulativas disponibles
+    - name: Windows update playbook
+      ansible.windows.win_updates:
+        category_names: "*"
+        reboot: yes
+        reboot_timeout: 3600
+        log_path: C:\Users\AppData\Local\Temp\ansibleLogs\update_logs_{{ansible_date_time.date}}.txt
+      register: win_results
+      changed_when:
+        - win_results.installed_update_count is defined
+        - win_results.installed_update_count > 0
+      failed_when:
+        - win_results.failed_update_count is defined
+        - win_results.failed_update_count > 0
+
+    - name: Forze Scan KB Updates
+      ansible.windows.win_powershell: 
+        scritp: |
+          USOClient.exe StartInteractiveScan
+
+    - name: Download scanned KB updates
+      ansible.windows.win_powershell:
+        scritp: |
+          UsoClient StartDownload
+
+    - name: Install downloaded KB
+      ansible.windows.win_powershell:
+        scritp: |
+          UsoClient StartInstall
+
+    - name: Get installed updates
+      ansible.windows.win_updates:
+        category_names: "*"
+        state: installed
+        log_path: C:\Users\AppData\Local\Temp\ansibleLogs\installed_logs_{{ansible_date_time.date}}.txt
+
+   
