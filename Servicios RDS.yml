@@ -6,18 +6,18 @@
   gather_facts: yes
   tasks:
 
+    - name: Salida de estado de los servicios
+      ansible.windows.win_command: sc interrogate "{{ item }}" > C:\Users\AppData\Local\Temp\ansibleLogs\services_logs_{{ansible_date_time.date}}.txt
+      register: result
+      failed_when: result is not defined
+      loop: "{{ Services_RDS }}"
+
     - name: Validar el estado del servicio
       ansible.windows.win_service:
         name: "{{ item }}"
       register: result
       failed_when: result is not defined
       loop: "{{ Services_RDS }}"
-
-   # - name: Salida de estado de los servicios
-    #  ansible.windows.win_command: sc interrogate "{{ item }}" > C:\Users\AppData\Local\Temp\ansibleLogs\services_logs_{{ansible_date_time.date}}.txt
-     # register: result
-      #failed_when: result is not defined
-      #loop: "{{ Services_RDS }}"
       
       
      #                    NOTA                             # 
