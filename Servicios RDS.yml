@@ -1,6 +1,8 @@
 ---
 - name: Validación Servicios RDS
   hosts: all
+  vars:
+    time: "{{ ansible_date_time.hour }}:{{ ansible_date_time.minute }}:{{ ansible_date_time.second }}"
   vars_files:
     - vars.yml
   gather_facts: yes
