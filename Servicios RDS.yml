@@ -1,8 +1,6 @@
 ---
 - name: Validación Servicios RDS
   hosts: all
-  vars:
-    time: "{{ ansible_date_time.hour }}:{{ ansible_date_time.minute }}:{{ ansible_date_time.second }}"
   vars_files:
     - vars.yml
   gather_facts: yes
@@ -18,7 +16,7 @@
     - name: Salida de estado de los servicios
       ansible.windows.win_powershell:
         script: |
-          get-service "{{ item }}" | select Displayname,Status,ServiceName,Can* >> C:\Users\AppData\Local\Temp\ansibleLogs\services_logs_{{ansible_date_time.date}}_"{{ time }}".txt
+          get-service "{{ item }}" | select Displayname,Status,ServiceName,Can* >> C:\Users\AppData\Local\Temp\ansibleLogs\services_logs_{{ansible_date_time.date}}.txt
       register: results
       failed_when: results is not defined
       loop: "{{ Services_RDS }}"
