@@ -40,12 +40,12 @@ Services_Azure_Active_Directory:
   - wuauserv
   
 Services_RDS:
-  - Dhcp
-  - Netlogon
-  - TermService
-  - UsoSvc
+ # - Dhcp
+ # - Netlogon
+ # - TermService
+ # - UsoSvc
   - W32Time
-  - wuauserv
+ # - wuauserv
   
 Servidores_WSUS:
   - Dhcp
