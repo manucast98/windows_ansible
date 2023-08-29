@@ -41,9 +41,9 @@ Services_Azure_Active_Directory:
   
 Services_RDS:
  # - Dhcp
-  - Netlogon
+ # - Netlogon
  # - TermService
- # - UsoSvc
+  - UsoSvc
   - W32Time
  # - wuauserv
   
