@@ -3,7 +3,7 @@
   hosts: all
   vars_files:
     - vars.yml
-  gather_facts: false
+  gather_facts: yes
   tasks:
 
     - name: Validar el estado del servicio
@@ -14,7 +14,7 @@
       loop: "{{ Services_RDS }}"
 
     - name: Salida de estado de los servicios
-      ansible.windows.win_command: sc interrogate "{{ item }}" > C:\Users\AppData\Local\Temp\ansibleLogs\services_logs.txt
+      ansible.windows.win_command: sc interrogate "{{ item }}" > C:\Users\AppData\Local\Temp\ansibleLogs\services_logs_{{ansible_date_time.date}}.txt
       failed_when: result is not defined
       loop: "{{ Services_RDS }}"
       
