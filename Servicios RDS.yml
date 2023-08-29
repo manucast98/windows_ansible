@@ -7,9 +7,6 @@
     - vars.yml
   gather_facts: yes
   tasks:
-
-    - debug: 
-      var: ansible_date_time
       
     - name: Validar el estado del servicio
       ansible.windows.win_service:
@@ -21,7 +18,8 @@
     - name: Salida de estado de los servicios
       ansible.windows.win_powershell:
         script: |
-          get-service "{{ item }}" | select Displayname,Status,ServiceName,StartTime,Can* >> C:\Users\AppData\Local\Temp\ansibleLogs\services_logs_{{ansible_date_time.date}}.txt
+          get-service "{{ item }}" | select Displayname,Status,ServiceName,StartTime,Can* >> C:\Users\AppData\Local\Temp\ansibleLogs\services_logs_{{ansible_date_time.date}}_"{{ time }}"
+.txt
       register: results
       failed_when: results is not defined
       loop: "{{ Services_RDS }}"
