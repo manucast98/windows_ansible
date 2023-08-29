@@ -1,0 +1,31 @@
+---
+- name: Validación Servicios Exchange 365
+  hosts: all
+  vars_files:
+    - vars.yml
+  gather_facts: false
+  tasks:
+
+    - name: Validar el estado del servicio
+      ansible.windows.win_service:
+        name: "{{ item }}"
+      register: result
+      failed_when: result is not defined
+      loop: "{{ Services_Exchange_365 }}"
+
+     #                    NOTA                             # 
+     # El siguiente bloque itera sobre un diccionario      #
+     # de la variable "result" puesta en el "register".    #
+     # los servicios obtenidos en el diccionario           #
+     # se iteran 1 a 1 por nombre y estado                 #
+     # si está "stopped" pasará a "started"                #
+
+    - name: Si el servicio esta 'stopped' cambiar a 'started'
+      ansible.windows.win_service:
+        name: "{{ result.results[ansible_loop.index0 - 1].name }}"
+        state: started
+      when: "'stopped' in result.results[ansible_loop.index0 - 1].state"
+      loop: "{{ result.results }}"
+      loop_control:
+        extended: true
+        label: "{{ ansible_loop.index0 }}"

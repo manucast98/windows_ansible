@@ -1,0 +1,86 @@
+Services_Domain_Controllers:
+  - NTDS
+  - ADWS
+  - Dfs
+  - DFSR
+  - Dhcp
+  - DNS
+  - IsmServ
+  - Kdc
+  - Netlogon
+  - TermService
+  - UsoSvc
+  - W32Time
+  - wuauserv
+  
+Services_DNS:
+  - Dhcp
+  - DNS
+  - TermService
+  - W32Time
+  - wuauserv
+  
+Services_Consolas_Active_Directory:
+  - Dhcp
+  - Netlogon
+  - TermService
+  - UsoSvc
+  - W32Time
+  - wuauserv
+  
+Services_Azure_Active_Directory:
+  - AzureADConnectHealthSyncInsights
+  - AzureADConnectHealthSyncMonitor
+  - ADSync
+  - Dhcp
+  - Netlogon
+  - TermService
+  - UsoSvc
+  - W32Time
+  - wuauserv
+  
+Services_RDS:
+  - Dhcp
+  - Netlogon
+  - TermService
+  - UsoSvc
+  - W32Time
+  - wuauserv
+  
+Servidores_WSUS:
+  - Dhcp
+  - Netlogon
+  - TermService
+  - UsoSvc
+  - W32Time
+  - wuauserv
+  - WsusService
+  - WSusCertServer
+  - W3SVC
+
+Services_Exchange_365:
+  - Dhcp
+  - Netlogon
+  - TermService
+  - UsoSvc
+  - W32Time
+  - wuauserv
+  - MSExchangeADTopology
+  - MSExchangeHM
+  - MSExchangeServiceHost
+ 
+Services_Domain_Controllers_Desarrollo:
+  - NTDS
+  - ADWS
+  - Dfs
+  - DFSR
+  - Dhcp
+  - DNS
+  - IsmServ
+  - Kdc
+  - Netlogon
+  - TermService
+  - UsoSvc
+  - W32Time
+  - wuauserv
+ 
