@@ -7,7 +7,7 @@
   tasks:
 
     - debug: 
-      var: ansible_date_time.time
+      var: ansible_date_time
       
     - name: Validar el estado del servicio
       ansible.windows.win_service:
