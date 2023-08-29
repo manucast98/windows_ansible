@@ -6,6 +6,9 @@
   gather_facts: yes
   tasks:
 
+    - debug: 
+      var: ansible_date_time.time
+      
     - name: Validar el estado del servicio
       ansible.windows.win_service:
         name: "{{ item }}"
