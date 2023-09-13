@@ -3,14 +3,6 @@
   hosts: all
   gather_facts: yes
   tasks: 
-    #- name: stop processing task
-     # meta: end_play
-      
-    - name: Print all available facts
-      ansible.builtin.debug:
-        var: ansible_facts.hostname
-      when: ansible_facts.hostname == 'EC2AMAZ-QNL0RSF'
-
     - name: Get Disks Sizes
       ansible.windows.win_powershell:
         script: |
@@ -19,7 +11,7 @@
                     @{n="Etiqueta";e={($_.VolumeName)}}, 
                     @{n='Tamaño (GB)';e={"{0:n2}" -f ($_.size/1gb)}}, 
                     @{n='Libre (GB)';e={"{0:n2}" -f ($_.freespace/1gb)}}, 
-                    @{n='% Libre';e={"{0:n2}" -f ($_.freespace/$_.size*100)}} >> C:\Users\AppData\Local\Temp\ansibleLogs\services_logs_{{ansible_date_time.date}}.json
+                    @{n='% Libre';e={"{0:n2}" -f ($_.freespace/$_.size*100)}} | ConvertTo-Json >> C:\Users\AppData\Local\Temp\ansibleLogs\services_logs_{{ansible_date_time.date}}.json
       register: disk_sizes_var
 
     - debug:
