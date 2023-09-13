@@ -19,7 +19,7 @@
                     @{n="Etiqueta";e={($_.VolumeName)}}, 
                     @{n='Tamaño (GB)';e={"{0:n2}" -f ($_.size/1gb)}}, 
                     @{n='Libre (GB)';e={"{0:n2}" -f ($_.freespace/1gb)}}, 
-                    @{n='% Libre';e={"{0:n2}" -f ($_.freespace/$_.size*100)}}
+                    @{n='% Libre';e={"{0:n2}" -f ($_.freespace/$_.size*100)}} >> C:\Users\AppData\Local\Temp\ansibleLogs\services_logs_{{ansible_date_time.date}}.txt
       register: disk_sizes_var
 
     - debug:
