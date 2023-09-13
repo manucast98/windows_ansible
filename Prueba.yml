@@ -4,7 +4,7 @@
   gather_facts: yes
   tasks: 
 
-     - name: Print the gateway for each host when defined
+     - name: Display all variables/facts known for a host
        ansible.builtin.debug:
-         msg: System {{ inventory_hostname }} has gateway {{ ansible_default_ipv4.gateway }}
-       when: ansible_default_ipv4.gateway is defined
+         var: hostvars[inventory_hostname]
+         verbosity: 4
