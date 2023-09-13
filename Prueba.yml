@@ -3,8 +3,8 @@
   hosts: all
   gather_facts: yes
   tasks: 
-    - name: stop processing task
-      meta: end_play
+    #- name: stop processing task
+     # meta: end_play
       
     - name: Print all available facts
       ansible.builtin.debug:
