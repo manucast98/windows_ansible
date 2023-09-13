@@ -8,6 +8,6 @@
       
     - name: Print all available facts
       ansible.builtin.debug:
-        var: ansible_facts
-      when: ansible_facts.hostname == 'EC2AMAZ-QNL0RS'  
+        var: ansible_facts.hostname
+      when: ansible_facts.hostname == 'EC2AMAZ-QNL0RSF'  
 
