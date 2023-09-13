@@ -8,6 +8,9 @@
         var: hostvars[inventory_hostname]
         verbosity: 4
 
+    - name: stop processing task
+      meta: end_play
+      
     - name: Print all available facts
       ansible.builtin.debug:
         var: ansible_facts
