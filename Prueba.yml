@@ -18,8 +18,7 @@
         msg:
           - "Tamaños Discos: {{ disk_sizes_var.output }}"
 
-
-    - name: Ansible fact 
-      debug:
-        msg: {{ ansible_date_time }}
+    - debug:
+        msg: 
+          - {{ ansible_date_time }}
 
