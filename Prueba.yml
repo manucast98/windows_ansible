@@ -3,9 +3,13 @@
   hosts: all
   gather_facts: yes
   tasks: 
+    - name: Get timestamp from the system
+      shell: "date +%Y-%m-%d%H-%M-%S"
+      register: daytime
+    
     - name: Set variables
       set_fact:
-        time: "{{ ansible_date_time.time }}"
+        time: "{{ daytime.stdout[10:] }}"
 
     - name: Get Disks Sizes
       ansible.windows.win_powershell:
