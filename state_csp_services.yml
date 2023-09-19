@@ -1,0 +1,25 @@
+# Estado de los servicios CSP 
+- name: Create Directory
+  ansible.windows.win_file:
+    path: D:\Automatizacion_Ansible\Revision_Ambiente\Servicios
+    state: directory
+
+- name: Reporte Servicios Activos
+  ansible.windows.win_powershell:
+    script: |
+      $currentDate = Get-Date -Format "dd-MM-yyyy_HH:mm"
+      Get-Service | Where-Object -Property Name -match "{{ item }}" | Where-Object -Property Status -match "Running" | Select-Object -Property Name,Status | ConvertTo-Json >> D:\Automatizacion_Ansible\Revision_Ambiente\Servicios\ServiciosRunning_$currentDate
+  loop: "{{ servicios_csp }}"
+
+- name: Reporte Servicios Detenidos
+  ansible.windows.win_powershell:
+    script: |
+      $currentDate = Get-Date -Format "dd-MM-yyyy_HH:mm"
+      $countStoppedServices = Get-Service | Where-Object -Property Name -match "{{ item }}" | Where-Object -Property Status -match "Stopped"
+      if ( $countStoppedServices -eq $null ){ echo "No hay servicios detenidos" }else{ Get-Service | Where-Object -Property Name -match "{{ item }}" | Where-Object -Property Status -Match "Stopped" | Select-Object Name,Status | ConvertTo-Json >> D:\Automatizacion_Ansible\Revision_Ambiente\Servicios\ServiciosStopped_$currentDate }
+  loop: "{{ servicios_csp }}"
+
+
+
+
+

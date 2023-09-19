@@ -1,0 +1,13 @@
+servicios_csp:
+  - CSP EMV Authorizer Core IF Service
+  - CSP EMV Authorizer File Manager Service
+  - CSP EMV Authorizer ISO IF Service
+  - CSP EMV Authorizer Queue Service Manager CRI
+  - CSP EMV Authorizer Queue Service Manager ESA
+  - CSP EMV Authorizer Queue Service Manager GUA
+  - CSP EMV Authorizer Queue Service Manager HON
+  - CSP EMV Authorizer Queue Service Manager NIC
+  - CSP EMV Authorizer Queue Service Manager PAN
+  - CSP EMV Authorizer Settlement Service
+  - CSP EMV Authorizer Settlement STP Service
+  - CSP EMV Authorizer Store And Forward Service

@@ -1,0 +1,12 @@
+# Proceso de revisión Pool de IIS
+- name: Create Directory
+  ansible.windows.win_file:
+    path: D:\Automatizacion_Ansible\Revision_Ambiente\Pool_IIS
+    state: directory
+
+- name: Reporte Pool IIS
+  ansible.windows.win_powershell:
+    script: |
+      $currentDate = Get-Date -Format "dd-MM-yyyy_HH:mm"
+      Get-IISAppPool | Select-Object -Property Name,Status | ConvertTo-Json >> D:\Automatizacion_Ansible\Revision_Ambiente\Pool_IIS\reportePoolIIS_$currentDate.json
+  
