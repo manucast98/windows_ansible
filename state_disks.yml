@@ -9,7 +9,7 @@
   - name: Generating file
     ansible.windows.win_powershell:
       script: |
-        Get-Volume | ConvertTo-Json >> C:\Users\AppData\Local\Temp\ansibleLogs\disk_info_{{ansible_date_time.date}}.txt
+        Get-Volume | ConvertTo-Json >> C:\Users\AppData\Local\Temp\ansibleLogs\disk_info_{{ansible_date_time.date}}.json
 
   - name: Check status
     ansible.windows.win_powershell:
