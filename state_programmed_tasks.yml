@@ -7,7 +7,7 @@
   # Status tareas programadas
   - name: Create Directory
     ansible.windows.win_file:
-      path: D:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas
+      path: C:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas
       state: directory
   
   - name: Report state programmed tasks
