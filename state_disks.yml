@@ -9,7 +9,12 @@
   - name: Generating file
     ansible.windows.win_powershell:
       script: |
-        Get-WmiObject win32_logicaldisk | Format-Table DeviceId, MediaType, @{n="Size";e={[math]::Round($_.Size/1GB,2)}},@{n="FreeSpace";e={[math]::Round($_.FreeSpace/1GB,2)}}, @{n="UsedSpace";e={[math]::Round((($_.Size-$_.FreeSpace)/1GB),2)}} | select DriveLetter,HealthStatus,Size,SizeRemaining | ConvertTo-Json >> C:\Users\AppData\Local\Temp\ansibleLogs\disk_info_{{ansible_date_time.date}}.json
+        Get-WMIObject  -Class Win32_LogicalDisk | Where-Object {$_.DriveType -eq 3}  `
+        | Select-Object @{n="Unidad";e={($_.Name)}}, 
+                    @{n="Etiqueta";e={($_.VolumeName)}}, 
+                    @{n='Tamaño (GB)';e={"{0:n2}" -f ($_.size/1gb)}}, 
+                    @{n='Libre (GB)';e={"{0:n2}" -f ($_.freespace/1gb)}}, 
+                    @{n='% Libre';e={"{0:n2}" -f ($_.freespace/$_.size*100)}}| ConvertTo-Json >> C:\Users\AppData\Local\Temp\ansibleLogs\disk_info_{{ansible_date_time.date}}.json
 
   - name: Check status
     ansible.windows.win_powershell:
