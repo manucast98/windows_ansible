@@ -6,6 +6,12 @@
 
   # Estado de los discos
   
+  - name: Generating file
+    ansible.windows.win_powershell:
+      script: |
+        Get-Volume | select DriveLetter,HealthStatus,Size,SizeRemaining
+    register: output_var
+
   - name: Check status
     ansible.windows.win_powershell:
       script: |
