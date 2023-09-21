@@ -14,6 +14,6 @@
     ansible.windows.win_powershell:
       script: |
         $currentDate = Get-Date -Format "dd-MM-yyyy_HH:mm"
-        Get-ScheduledTask | Where-Object -Property TaskName -match '{{ SchduledTask_Name }}' | Select-Object -Property TaskName,State | ConvertTo-Json >> D:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\reporteTareasProgramadas_$currentDate.json
+        Get-ScheduledTask | Where-Object -Property TaskName -match '{{ SchduledTask_Name }}' | Select-Object -Property TaskName,State | ConvertTo-Json >> C:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\reporteTareasProgramadas_$currentDate.json
 
     
