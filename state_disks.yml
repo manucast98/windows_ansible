@@ -1,3 +1,9 @@
+---
+- name: Estado de los discos
+  hosts: all
+  gather_facts: false
+  tasks:
+
 # Estado de los discos
 
 - name: Check status
