@@ -1,7 +1,7 @@
 ---
 - name: Estado de los discos
   hosts: all
-  gather_facts: false
+  gather_facts: yes
   tasks:
 
   # Estado de los discos
@@ -9,7 +9,7 @@
   - name: Check status
     ansible.windows.win_powershell:
       script: |
-        Get-Volume | select DriveLetter,HealthStatus,Size,SizeRemaining
+        Get-Volume | select DriveLetter,HealthStatus,Size,SizeRemaining >> C:\Users\AppData\Local\Temp\ansibleLogs\disk_info.txt
     register: output_var
   
   - debug:
