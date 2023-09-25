@@ -4,7 +4,6 @@ Services_Domain_Controllers:
   - Dfs
   - DFSR
   - Dhcp
-  - DNS
   - IsmServ
   - Kdc
   - Netlogon
@@ -15,7 +14,6 @@ Services_Domain_Controllers:
   
 Services_DNS:
   - Dhcp
-  - DNS
   - TermService
   - W32Time
   - wuauserv
@@ -45,6 +43,7 @@ Services_RDS:
  # - TermService
   - UsoSvc
   - W32Time
+  - 
  # - wuauserv
   
 Servidores_WSUS:
@@ -75,7 +74,6 @@ Services_Domain_Controllers_Desarrollo:
   - Dfs
   - DFSR
   - Dhcp
-  - DNS
   - IsmServ
   - Kdc
   - Netlogon
