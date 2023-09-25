@@ -13,7 +13,6 @@
   - name: Report state programmed tasks
     ansible.windows.win_powershell:
       script: |
-        #$currentDate = Get-Date -Format "dd-MM-yyyy_HH:mm"
         Get-ScheduledTask | Where-Object -Property TaskName -match 'compresion*' | Select-Object -Property TaskName,State | ConvertTo-Json >> C:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\reporteTareasProgramadas_{{ ansible_date_time.date }}.json
 
     
