@@ -1,40 +1,22 @@
 ---
-- name: Validación Servicios RDS
-  hosts: all
-  vars_files:
-    - vars.yml
-  gather_facts: yes
-  tasks:
-      
-    - name: Validar el estado del servicio
-      ansible.windows.win_service:
-        name: "{{ item }}"
-      register: result
-      failed_when: result is not defined
-      loop: "{{ Services_RDS }}"
+- name Validación Servicios Consolas Active Directory
+  hosts all
+  gather_facts false
+  tasks
 
-    - name: Salida de estado de los servicios
-      ansible.windows.win_powershell:
-        script: |
-          get-service "{{ item }}" | select Displayname,Status,ServiceName,Can* >> C:\Users\AppData\Local\Temp\ansibleLogs\services_logs_{{ansible_date_time.date}}.txt
-      register: results
-      failed_when: results is not defined
-      loop: "{{ Services_RDS }}"
-      
-      
-     #                    NOTA                             # 
-     # El siguiente bloque itera sobre un diccionario      #
-     # de la variable "result" puesta en el "register".    #
-     # los servicios obtenidos en el diccionario           #
-     # se iteran 1 a 1 por nombre y estado                 #
-     # si está "stopped" pasará a "started"                #
+    - name Validar el estado del servicio
+      ansible.windows.win_service
+        name {{ item }}
+      register result
+      failed_when result is not defined
+      loop
+        - Dhcp
+        - DPS
+        - Dnscache
+        - PolicyAgent
+        - Spooler
 
-    - name: Si el servicio esta 'stopped' cambiar a 'started'
-      ansible.windows.win_service:
-        name: "{{ result.results[ansible_loop.index0 - 1].name }}"
-        state: started
-      when: "'stopped' in result.results[ansible_loop.index0 - 1].state"
-      loop: "{{ result.results }}"
-      loop_control:
-        extended: true
-        label: "{{ ansible_loop.index0 }}"
+    - name Si el servicio esta 'stopped' cambiar a 'started'
+      ansible.windows.win_service
+        state started
+      when 'stopped' in result.state
