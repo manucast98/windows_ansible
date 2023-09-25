@@ -27,7 +27,7 @@
 =======
     - name: Validar el estado del servicio
       ansible.windows.win_service:
-        name: {{ item }}
+        name: "{{ item }}"
       register: result
       failed_when: result is not defined
       loop:
