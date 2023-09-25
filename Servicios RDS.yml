@@ -36,6 +36,30 @@
 
       failed_when: result is not defined
 
+    - name: Salida de estado de los servicios
+      ansible.windows.win_powershell:
+        script: |
+          get-service "{{ item }}" | select Displayname,Status,ServiceName,Can*
+      register: results
+      failed_when: results is not defined
+      loop:
+        - RpcSs
+
+        - RemoteRegistry
+
+        - iprip
+
+        - RemoteAccess
+
+        - DPS
+
+        - PolicyAgent
+
+        - Spooler
+
+    - debug:
+        msg:  {{ results }} 
+
  
 
     - name: Si el servicio esta 'stopped' cambiar a 'started'
