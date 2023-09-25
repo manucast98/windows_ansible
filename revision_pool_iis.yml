@@ -12,5 +12,5 @@
 - name: Reporte Pool IIS
   ansible.windows.win_powershell:
     script: |
-      Get-IISAppPool | Select-Object -Property Name,Status | ConvertTo-Json >> D:\Automatizacion_Ansible\Revision_Ambiente\Pool_IIS\reportePoolIIS_{{ansible_date_time.date}}.json
+      Get-IISAppPool | Select-Object -Property Name,Status | ConvertTo-Json >> D:\Automatizacion_Ansible\Revision_Ambiente\Pool_IIS\reportePoolIIS_{{ ansible_date_time.date }}.json
   
