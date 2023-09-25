@@ -18,7 +18,13 @@
 
       loop:
 
-        - Dhcp
+        - RpcSs
+
+        - RemoteRegistry
+
+        - iprip
+
+        - RemoteAccess
 
         - DPS
 
