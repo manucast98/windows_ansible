@@ -42,6 +42,6 @@
 
         state: started
 
-      when: "'stopped' in result.results[ansible_loop.index0 - 1].state"
+      when: "'stopped' in result.results"
 
       loop: "{{ result.results }}"
