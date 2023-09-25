@@ -58,7 +58,7 @@
         - Spooler
 
     - debug:
-        msg:  {{ results }} 
+        msg:  "{{ results }}" 
 
  
 
