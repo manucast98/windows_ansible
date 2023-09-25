@@ -1,0 +1,43 @@
+---
+
+- name Validación Servicios Consolas Active Directory
+
+  hosts all
+
+  gather_facts false
+
+  tasks
+
+ 
+
+    - name Validar el estado del servicio
+
+      ansible.windows.win_service
+
+        name {{ item }}
+
+      register result
+
+      failed_when result is not defined
+
+      loop
+
+        - Dhcp
+
+        - DPS
+
+        - Dnscache
+
+        - PolicyAgent
+
+        - Spooler
+
+ 
+
+    - name Si el servicio esta 'stopped' cambiar a 'started'
+
+      ansible.windows.win_service
+
+        state started
+
+      when 'stopped' in result.state
