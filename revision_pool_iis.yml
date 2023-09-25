@@ -1,4 +1,9 @@
-# Proceso de revisión Pool de IIS
+---
+- name: Proceso de revisión Pool de IIS
+  hosts: all
+  gather_facts: yes
+  tasks:
+
 - name: Create Directory
   ansible.windows.win_file:
     path: D:\Automatizacion_Ansible\Revision_Ambiente\Pool_IIS
