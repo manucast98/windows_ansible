@@ -2,7 +2,7 @@
 - name Validación Servicios Consolas Active Directory
   hosts all
   gather_facts false
-  tasks
+  tasks:
 
     - name Validar el estado del servicio
       ansible.windows.win_service
