@@ -8,8 +8,9 @@
   tasks:
 
     - name: Mover Binario Agente NewRelic
-      ansible.windows.win_copy:
+      fetch:
         src: C:\Automatizacion_Ansible\newrelic-infra.msi
         dest: /home/ec2-user/
-        remote_src: true
+        flat: yes
+       delegate_to: 13.59.228.13
       when: ansible_facts.hostname == 'PRUEBA'
