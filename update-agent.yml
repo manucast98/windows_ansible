@@ -1,0 +1,25 @@
+---
+- name: Actualización Agente NewRelic
+  hosts: all
+  become: false
+  gather_facts: false
+  vars_files:
+    - group_vars/vars_newrelic.yml
+  tasks:
+
+    - name: Instalación última versión
+      ansible.windows.win_powershell:
+        script: |
+          msiexec.exe /qn /i "{{ installation_path }}"
+
+    - name: Iniciar el Servicio del Agente Newrelic
+      win_service:
+        name: newrelic-infra
+        state: started
+        start_mode: auto
+      register: state_service
+
+    - name: Verificación del estado del servicio
+      debug:
+        msg: |
+          "El estado del servicio es: {{ state_service.state }}" 

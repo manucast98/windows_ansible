@@ -1,0 +1,11 @@
+# Ruta origen del archivo binario
+source_server_path: 'C:\'
+
+# Ruta destino del archivo binario
+dest_server_path: 'C:\'
+
+# Modificar la ruta de instalación de la variable
+# Se debe especificar el directorio donde estará alojado el binario
+# En el servidor
+
+installation_path: 'C:\Program Files\newrelic-infra.msi'

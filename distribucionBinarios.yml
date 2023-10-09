@@ -1,0 +1,17 @@
+---
+- name: Copiar binarios Local to Remote Agente NewRelic
+  hosts: all
+  become: false
+  gather_facts: false
+  vars_files:
+    - group_vars/vars_newrelic.yml
+  tasks:
+
+    - name: Mover Binario Agente NewRelic
+      ansible.windows.win_copy:
+        src: "{{ source_server_path }}"
+        dest: "{{ dest_server_path }}"
+        remote_src: yes
+      #vars:
+      #  ansible_become_user: user
+      #  ansible_become_password: pass
