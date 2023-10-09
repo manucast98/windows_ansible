@@ -12,5 +12,5 @@
         src: C:\Automatizacion_Ansible\newrelic-infra.msi
         dest: /home/ec2-user/
         flat: yes
-       delegate_to: 13.59.228.13
+      delegate_to: 13.59.228.13
       when: ansible_facts.hostname == 'PRUEBA'
