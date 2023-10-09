@@ -9,14 +9,14 @@
 
     - name: Mover Binario Agente NewRelic
       ansible.windows.win_copy:
-        src: C:\Automatizacion_Ansible\newrelic-infra
+        src: C:\Automatizacion_Ansible\newrelic-infra.msi
         dest: /home/ec2-user/
         remote_src: true
       when: ansible_facts.hostname == 'PRUEBA'
 
     - name: Mover Binario Agente NewRelic
       ansible.windows.win_copy:
-        src: /home/ec2-user/newrelic-infra
+        src: /home/ec2-user/newrelic-infra.msi
         dest: C:\Automatizacion_Ansible\
         remote_src: true
       when: ansible_facts.hostname == 'EC2AMAZ-QNL0RSF'
