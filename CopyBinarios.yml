@@ -6,7 +6,7 @@
   
     - name: Copy File
       ansible.windows.win_copy:
-        src: /home/ansible/Automatizacion_Ansible/
+        src: /root/
         dest: C:\Automatizacion_Ansible\newrelic-infra.msi
         remote_src: true
       when: ansible_facts.hostname == 'PRUEBA'
