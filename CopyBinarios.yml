@@ -6,6 +6,6 @@
   
     - name: Copy File
       ansible.windows.win_copy:
-        src: C:\Automatizacion_Ansible\newrelic-infra.msi
         dest: C:\Users\Agent-newrelic.msi
+        src: C:\Automatizacion_Ansible\newrelic-infra.msi
         remote_src: true
