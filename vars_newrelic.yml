@@ -1,8 +1,8 @@
 # Ruta origen del archivo binario
-source_server_path: 'C:\Automatizacion_Ansible\newrelic-infra'
+source_server_path: 'C:\Automatizacion_Ansible\newrelic-infra.msi'
 
 # Ruta destino del archivo binario
-dest_server_path: 'C:\Automatizacion_Ansible\'
+dest_server_path: 'C:\Automatizacion_Ansible\newrelic-infra.msi'
 
 # Modificar la ruta de instalación de la variable
 # Se debe especificar el directorio donde estará alojado el binario
