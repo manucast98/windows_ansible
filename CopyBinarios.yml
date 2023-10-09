@@ -2,7 +2,7 @@
 - name: Copiar binarios Local to Remote Agente NewRelic
   hosts: all
   become: false
-  gather_facts: false
+  gather_facts: true
   vars_files:
     - vars_newrelic.yml
   tasks:
