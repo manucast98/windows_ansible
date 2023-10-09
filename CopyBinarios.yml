@@ -2,15 +2,10 @@
 - name: Copiar binarios Local to Remote Agente NewRelic
   hosts: all
   become: false
-  gather_facts: true
-  vars_files:
-    - vars_newrelic.yml
   tasks:
-
-    - name: Mover Binario Agente NewRelic
-      fetch:
+  
+    - name: Copy File
+      ansible.windows.win_copy:
         src: C:\Automatizacion_Ansible\newrelic-infra.msi
-        dest: /home/ec2-user/
-        flat: yes
-      delegate_to: 13.59.228.13
-      when: ansible_facts.hostname == 'PRUEBA'
+        dest: C:\Users\Agent-newrelic.msi
+        remote_src: true
