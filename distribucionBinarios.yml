@@ -4,7 +4,7 @@
   become: false
   gather_facts: false
   vars_files:
-    - group_vars/vars_newrelic.yml
+    - vars_newrelic.yml
   tasks:
 
     - name: Mover Binario Agente NewRelic
