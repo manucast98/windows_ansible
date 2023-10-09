@@ -1,0 +1,20 @@
+---
+- name: Copiar binarios Local to Remote Agente NewRelic
+  hosts: all
+  become: false
+  gather_facts: false
+  vars_files:
+    - vars_newrelic.yml
+  tasks:
+
+    - name: Mover Binario Agente NewRelic
+      ansible.windows.win_copy:
+        src: C:\Automatizacion_Ansible\newrelic-infra.msi
+        dest: /home/ec2-user/
+      when: ansible_facts.hostname == 'EC2AMAZ-QNL0RSF'
+
+    - name: Mover Binario Agente NewRelic
+      ansible.windows.win_copy:
+        src: /home/ec2-user/newrelic-infra.msi
+        dest: C:\Automatizacion_Ansible\
+      when: ansible_facts.hostname == 'PRUEBA'
