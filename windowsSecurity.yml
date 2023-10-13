@@ -1,6 +1,6 @@
 ---
 - name: Hardening over Windows Server Machine
-  hosts: windows
+  hosts: all
   become: false
   gather_facts: false
   vars:
