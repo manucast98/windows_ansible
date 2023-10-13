@@ -1,0 +1,15 @@
+---
+- name: check updates
+  hosts: all
+  become: false
+  gather_facts: yes
+  tasks:
+
+     #Busqueda de actualizaciones de windows
+    - name: Busqueda de actualizaciones de windows
+      ansible.windows.win_updates:
+        category_names: "*"
+        state: searched
+        log_path: C:\ansible_wu.txt
+
+   
