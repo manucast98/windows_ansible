@@ -31,7 +31,7 @@
 
     #3 Establecer Zona horaria 
     - name: Establecer zona horaria "(UTC-4:30) Caracas"
-      win_timezone:
+      community.windows.win_timezone:
         timezone: Atlantic Standard Time
     
     #4 Colocar Online todos los discos desconectados
