@@ -63,19 +63,6 @@
         - { log_name: Security }
         - { log_name: System }
 
-    #8 Dejar solo el grupo Administradores en Allow log on locally
-    - name: Permitir solo "Administradores" en 'Allow Log on Locally'
-      win_user_right:
-        name: SeDenyInteractiveLogonRight
-        users:
-        - Guest
-        - Users
-        - Backup
-        - Operators
-        - Power Users
-        action: set
-      ignore_errors: true
-
     - name: Reinicio requerido 
       ansible.windows.win_reboot:
 
