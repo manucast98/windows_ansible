@@ -3,33 +3,17 @@
   hosts: windows
   become: false
   gather_facts: false
-  pre_tasks:
-    - include_vars: variables/vars.yml
+  vars:
+    VM_HOSTNAME: PruebaVM
+    GUEST_USER_NEW_NAME: Developer
   tasks:
 
-    #1 Cambiar nombre adaptador de red
-    - name: Cambio de nombre adaptador de red
-      ansible.windows.win_powershell:
-        script: |
-          Rename-NetAdapter "Ethernet0" -NewName "Red Publica VLAN {{ VLAN_NUMBER }}"
-
-    #2 Cambiar nombre de host
+    #1 Cambiar nombre de host
     - name: Cambiar nombre del host virtual
       win_hostname:
         name: "{{ VM_HOSTNAME }}"
 
-    #3 Inclusión en el dominio
-    - name: Inclusión de host en el dominio
-      ansible.windows.win_domain_membership:
-        dns_domain_name: "{{ DNS_DOMAIN_NAME }}"
-        hostname: "{{ ansible_facts['nodename'] }}"
-        domain_admin_user: "{{ DOMAIN_USER }}"
-        domain_admin_password: "{{ DOMAIN_USER_PASSWD }}"
-        domain_ou_path: "OU= OU=VM POC Ansible"
-        state: domain
-      register: domain_state
-
-    #4 Agregar grupos administradores 
+    #2 Agregar grupos administradores 
     - name: Agregar grupos administradores
       win_group_membership:
         name: Grupo de usuarios adm
@@ -40,46 +24,23 @@
           - INTRA\SVC_TWScheduler_Pro
         state: present
 
-    #5 Cambiar nombre de usuarios Administrador y Guest
-    - name: Cambiar nombre usuario Administrador
-      ansible.windows.win_powershell:
-        script: |
-          Rename-LocalUser -Name "Administrador" -NewName "{{ ADM_USER_NEW_NAME }}"
-
     - name: Cambiar nombre usuario Guest
       ansible.windows.win_powershell:
         script: |
           Rename-LocalUser -Name "Guest" -NewName "{{ GUEST_USER_NEW_NAME }}"
 
-    #6 Establecer Zona horaria 
+    #3 Establecer Zona horaria 
     - name: Establecer zona horaria "(UTC-4:30) Caracas"
       win_timezone:
         timezone: Atlantic Standard Time
     
-    #7 Colocar Online todos los discos desconectados
+    #4 Colocar Online todos los discos desconectados
     - name: Cambiando estado de discos (Online)
       ansible.windows.win_powershell:
         script: |
           Get-Disk | Where-Object IsOffline -Eq $True | Set-Disk -IsOffline $False
-    
-    - name: Liberando letra retenida (E:) por disco 2 
-      ansible.windows.win_powershell:
-        script: |
-          Get-Partition -DriverLetter E | Set-Partition -NewDriverLetter F
 
-    - name: Asignar letra retenida a unidad DVD (E:)
-      ansible.windows.win_powershell:
-        script: |
-          $DVD_Drive = Get-WmiObject Win32_volume -filter 'DriveType = "5"'
-          $DVD_Drive.DriveLetter = "E:"
-          $DVD_Drive.Put()
-
-    - name: Asignar letra a segundo disco (D:)
-      ansible.windows.win_powershell:
-        script: |
-          Get-Partition -DriverLetter F | Set-Partition -NewDriverLetter D
-
-    #8 Desactivar Firewall (Dominio, Público y Privado)
+    #5 Desactivar Firewall (Dominio, Público y Privado)
     - name: Desactivar Firewall
       win_firewall:
         state: disabled
@@ -89,7 +50,7 @@
         - Private
       tags: disable_firewall
 
-    #9 Parar Servicio Wndows Update
+    #6 Parar Servicio Wndows Update
     - name: Desactivar y Parar Windows Update Service
       ansible.windows.win_powershell:
         script: |
@@ -97,13 +58,13 @@
           sc.exe stop wuauserv
           REG.exe QUERY HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\wuauserv /v Start
 
-    #10 Modificar tiempo de arranque
+    #7 Modificar tiempo de arranque
     - name: Modificar tiempo de arranque
       ansible.windows.win_powershell:
         script: |
           bcdedit /timeout 5
 
-    #11 Modificar tamaño de log Event Viewer
+    #8 Modificar tamaño de log Event Viewer
     - name: Modificar tamaño de log Event Viewer
       ansible.windows.win_powershell:
         script: |
@@ -113,7 +74,7 @@
         - { log_name: Security }
         - { log_name: System }
 
-    #12 Dejar solo el grupo Administradores en Allow log on locally
+    #9 Dejar solo el grupo Administradores en Allow log on locally
     - name: Permitir solo "Administradores" en 'Allow Log on Locally'
       win_user_right:
         name: SeDenyInteractiveLogonRight
@@ -125,56 +86,6 @@
         - Power Users
         action: set
       ignore_errors: true
-
-    #13 Configurar Servicio SNMP
-    - name: Configurar Servicio SNMP
-      win_snmp:
-        community_strings:
-          - "@@BANESC0@@"
-        permitted_managers: 
-          - 10.132.214.32
-        action: set
-
-    #14 Verificación de servicio Windows Management Instrumentation
-    - name: Windows Management Instrumentation arranque automático
-      win_service:
-        name: Windows Management Instrumentation
-        state: started
-        start_mode: auto
-
-    #15 Instalación y Primera configuración WSB
-    - name: Instalar Windows Server Backup (primer paso)
-      ansible.windows.win_powershell:
-        script: |
-          Install-WindowsFeature Windows-Server-Backup
-
-    - name: Configurar Windows Server Backup CMD (segundo paso)
-      ansible.windows.win_powershell:
-        script: |
-          REG ADD HKLM\SYSTEM\CurrentControlSet\Services\wbengine\SystemStateBackup\ /v AllowSSBToAnyVolume /t REG_DWORD /d 1 /f
-
-    #16 Asignación de clave de usuario administrador local
-    - name: Asignar clave a usuario administrador local
-      win_user:
-        name: Administrator
-        password: "{{ ADM_USER_NEW_PASSWD }}"
-        password_expired: yes
-        state: present
-
-    #17 Instalación Agente McAfee
-    - name: Instalación de Antivirus McAfee
-      ansible.windows.win_powershell:
-        script: |
-          cd D:\Instaladores\Programas\Antivirus
-          cd '.\McAfee Agent 5.7.1.116\'
-          .\FramePkg_571.exe
-
-    #18 Instalación Cliente SCCM
-    - name: Instalación Cliente SCCM
-      ansible.windows.win_powershell:
-        script: |
-          cd D:\Instaladores\Programas\Antivirus
-          .\ccmsetup.exe /mp:SAPL1090 /logon SMSSITECODE=B02 FSP=SAPL1090
 
     - name: Reinicio requerido 
       ansible.windows.win_reboot:
