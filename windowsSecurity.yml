@@ -13,34 +13,23 @@
       win_hostname:
         name: "{{ VM_HOSTNAME }}"
 
-    #2 Agregar grupos administradores 
-    - name: Agregar grupos administradores
-      win_group_membership:
-        name: Grupo de usuarios adm
-        members:
-          - INTRA\Domain Admins
-          - INTRA\G_ADM_AdministradoresServidores
-          - INTRA\G_ADM_DisoverHP
-          - INTRA\SVC_TWScheduler_Pro
-        state: present
-
     - name: Cambiar nombre usuario Guest
       ansible.windows.win_powershell:
         script: |
           Rename-LocalUser -Name "Guest" -NewName "{{ GUEST_USER_NEW_NAME }}"
 
-    #3 Establecer Zona horaria 
+    #2 Establecer Zona horaria 
     - name: Establecer zona horaria "(UTC-4:30) Caracas"
       community.windows.win_timezone:
         timezone: Atlantic Standard Time
     
-    #4 Colocar Online todos los discos desconectados
+    #3 Colocar Online todos los discos desconectados
     - name: Cambiando estado de discos (Online)
       ansible.windows.win_powershell:
         script: |
           Get-Disk | Where-Object IsOffline -Eq $True | Set-Disk -IsOffline $False
 
-    #5 Desactivar Firewall (Dominio, Público y Privado)
+    #4 Desactivar Firewall (Dominio, Público y Privado)
     - name: Desactivar Firewall
       win_firewall:
         state: disabled
@@ -50,7 +39,7 @@
         - Private
       tags: disable_firewall
 
-    #6 Parar Servicio Wndows Update
+    #5 Parar Servicio Wndows Update
     - name: Desactivar y Parar Windows Update Service
       ansible.windows.win_powershell:
         script: |
@@ -58,13 +47,13 @@
           sc.exe stop wuauserv
           REG.exe QUERY HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\wuauserv /v Start
 
-    #7 Modificar tiempo de arranque
+    #6 Modificar tiempo de arranque
     - name: Modificar tiempo de arranque
       ansible.windows.win_powershell:
         script: |
           bcdedit /timeout 5
 
-    #8 Modificar tamaño de log Event Viewer
+    #7 Modificar tamaño de log Event Viewer
     - name: Modificar tamaño de log Event Viewer
       ansible.windows.win_powershell:
         script: |
@@ -74,7 +63,7 @@
         - { log_name: Security }
         - { log_name: System }
 
-    #9 Dejar solo el grupo Administradores en Allow log on locally
+    #8 Dejar solo el grupo Administradores en Allow log on locally
     - name: Permitir solo "Administradores" en 'Allow Log on Locally'
       win_user_right:
         name: SeDenyInteractiveLogonRight
