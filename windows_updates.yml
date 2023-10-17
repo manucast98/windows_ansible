@@ -28,21 +28,6 @@
         - win_results.failed_update_count is defined
         - win_results.failed_update_count > 0
 
-    - name: Forze Scan KB Updates
-      ansible.windows.win_powershell: 
-        scritp: |
-          USOClient.exe StartInteractiveScan
-
-    - name: Download scanned KB updates
-      ansible.windows.win_powershell:
-        scritp: |
-          UsoClient StartDownload
-
-    - name: Install downloaded KB
-      ansible.windows.win_powershell:
-        scritp: |
-          UsoClient StartInstall
-
     - name: Get installed updates
       ansible.windows.win_updates:
         category_names: "*"
