@@ -6,32 +6,28 @@
 
   # Estado de los discos
   
-  - name: Generating file
-    ansible.windows.win_powershell:
-      script: |
-        Get-WMIObject  -Class Win32_LogicalDisk | Where-Object {$_.DriveType -eq 3}  `
-        | Select-Object @{n="Unidad";e={($_.Name)}}, 
-                    @{n="Etiqueta";e={($_.VolumeName)}}, 
-                    @{n='Tamaño (GB)';e={"{0:n2}" -f ($_.size/1gb)}}, 
-                    @{n='Libre (GB)';e={"{0:n2}" -f ($_.freespace/1gb)}}, 
-                    @{n='% Libre';e={"{0:n2}" -f ($_.freespace/$_.size*100)}}| ConvertTo-Json >> C:\Users\AppData\Local\Temp\ansibleLogs\disk_info_{{ansible_date_time.date}}.json
+    - name: Create Directory
+      ansible.windows.win_file:
+        path: D:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas
+        state: directory
 
-  - name: Check status
-    ansible.windows.win_powershell:
-      script: |
-        Get-Volume | select DriveLetter,HealthStatus,Size,SizeRemaining 
-    register: output_var
-  
-  - debug:
-      msg:
-        - "Disco: {{ output_var.output[ansible_loop.index0 - 1].DriveLetter }}"
-        - "Estado: {{ output_var.output[ansible_loop.index0 - 1].HealthStatus }}"
-        - "Size MB: {{ output_var.output[ansible_loop.index0 - 1].Size }}"
-        - "SizeRemaining MB: {{ output_var.output[ansible_loop.index0 - 1].SizeRemaining }}"
-    loop: "{{ output_var.output }}"
-    loop_control:
-      extended: true
-      label: "{{ ansible_loop.index0 }}"
+    - name: Reporte tareas programadas
+      ansible.windows.win_powershell:
+        script: |
+          Get-ScheduledTask | Where-Object -Property TaskName -match '{{ item }}' | Select-Object -Property TaskName,State | ConvertTo-Json >> D:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\tareaProgramada_{{ ansible_date_time.date }}.json
+      loop:
+        - CSP_ScheduledSettlements_06am
+      register: task_state
+    
+    - debug:
+        msg: {{ task_state }} 
+    
+    - name: Enable Programmed Tasks
+      ansible.windows.win_powershell:
+        script: |
+          Enable-ScheduledTask -TaskName '{{ item }}'
+      loop:
+        - CSP_ScheduledSettlements_06am
 
 
 
