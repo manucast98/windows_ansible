@@ -20,4 +20,4 @@
 
     - name: Log de tareas activas
       debug:
-        msg: {{ task_stat }}
+        msg: "{{ task_stat }}"
