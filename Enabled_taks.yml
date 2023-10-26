@@ -1,18 +1,18 @@
 ---
-- name: Habilitar tareas de cierre
+- name: Tareas de cierre
   hosts: all
   become: false
   gather_facts: true
   tasks:
   
-    - name: Get information about a task in the root folder
+    - name: Validacion de estado de tareas
       community.windows.win_scheduled_task_stat:
         name: pivote
       register: task_state
 
     - name: bloque para activar tareas
       block:
-        - name: activar de tareas
+        - name: activar tareas
           ansible.windows.win_powershell:
             script: |
               Enable-ScheduledTask -TaskName '{{ item }}' 
@@ -21,7 +21,7 @@
             - pivote
           register: task_post
 
-        - name: Reporte tareas programadas
+        - name: Reporte de tareas programadas
           ansible.windows.win_powershell:
             script: |
               Get-ScheduledTask | Where-Object -Property TaskName -match '{{ item }}' | Select-Object -Property TaskName,State | ConvertTo-Json >> C:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\tareaProgramada_{{ ansible_date_time.date }}.json
@@ -45,7 +45,7 @@
             - pivote
           register: task_post
 
-        - name: Reporte tareas programadas
+        - name: Reporte de tareas programadas
           ansible.windows.win_powershell:
             script: |
               Get-ScheduledTask | Where-Object -Property TaskName -match '{{ item }}' | Select-Object -Property TaskName,State | ConvertTo-Json >> C:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\tareaProgramada_{{ ansible_date_time.date }}.json
