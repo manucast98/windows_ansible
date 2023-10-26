@@ -13,7 +13,17 @@
     - name: Reporte tareas programadas
       ansible.windows.win_powershell:
         script: |
-          Get-ScheduledTask | Where-Object -Property TaskName -match '{{ item }}' | Select-Object -Property TaskName,State | ConvertTo-Json >> C:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\tareaProgramada_{{ ansible_date_time.date }}.json
+          $task = New-Object System.Collections.ArrayList
+    
+                foreach ($service in (Get-ScheduledTask | Where-Object -Property TaskName -match '{{ item }}' | Select-Object -Property TaskName,State)){
+                    $task.Add(@{"Name"= $task.TaskName; "DisplayName" = $task.DisplayName; "Status" = $task.State.ToString()}) | Out-Null
+                }
+    
+                $payload = @{
+                    metrics = @($task)
+                } | ConvertTo-Json
+                
+                echo $payload >> C:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\tareaProgramada_{{ ansible_date_time.date }}.json
       loop:
         - CSP_ScheduledSettlements_06am
         - pivote
