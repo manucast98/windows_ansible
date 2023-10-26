@@ -1,0 +1,19 @@
+---
+- name: Habilitar tareas de cierre
+  hosts: all
+  become: false
+  gather_facts: true
+  tasks:
+
+    - name: Reporte tareas programadas
+      ansible.windows.win_powershell:
+        script: |
+          Get-ScheduledTask | Where-Object -Property TaskName -match '{{ item }}' | Select-Object -Property TaskName,State | ConvertTo-Json >> D:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\tareaProgramada_{{ ansible_date_time.date }}.json
+      loop:
+        - CSP_ScheduledSettlements_06am
+      register: task_state
+
+    - name: Log de tareas activas
+      debug:
+        msg: |
+          "Tareas: {{ task_state }}"
