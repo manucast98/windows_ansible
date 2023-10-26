@@ -17,9 +17,10 @@
       loop:
         - CSP_ScheduledSettlements_06am
         - pivote
-     - name: get content
-       win_shell: 'type C:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\tareaProgramada_{{ ansible_date_time.date }}.json'  
-       register: content
+    
+    - name: get content
+      win_shell: 'type C:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\tareaProgramada_{{ ansible_date_time.date }}.json'  
+      register: content
 
     - name: Log de tareas activas
       debug:
