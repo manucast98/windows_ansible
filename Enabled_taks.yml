@@ -15,7 +15,7 @@
         script: |
           $task = New-Object System.Collections.ArrayList
     
-                foreach ($service in (Get-ScheduledTask | Where-Object -Property TaskName -match '{{ item }}' | Select-Object -Property TaskName,State)){
+                foreach ($task in (Get-ScheduledTask | Where-Object -Property TaskName -match '{{ item }}' | Select-Object -Property TaskName,State)){
                     $task.Add(@{"Name"= $task.TaskName; "DisplayName" = $task.DisplayName; "Status" = $task.State.ToString()}) | Out-Null
                 }
     
