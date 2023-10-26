@@ -21,7 +21,7 @@
           register: task_post
 
         - name: stop processing task
-            meta: end_play
+           meta: end_play
    
       when: task_stat.state.status == "TASK_STATE_DISABLED"
 
