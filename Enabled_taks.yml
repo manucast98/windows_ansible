@@ -10,31 +10,17 @@
         name: pivote
       register: task_state
 
-    - name: Reporte tareas programadas
-      ansible.windows.win_powershell:
-        script: |
-          $task = New-Object System.Collections.ArrayList
-    
-                foreach ($task in (Get-ScheduledTask | Where-Object -Property TaskName -match '{{ item }}')){
-                    $task.Add(@{"Name"= $task.TaskName; "Status"= $task.State.ToString()}) | Out-Null
-                }
-    
-                $payload = @{
-                    metrics = @($task)
-                } | ConvertTo-Json
-                
-                echo $payload >> C:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\tareaProgramada_{{ ansible_date_time.date }}.json
+    - name: Get information about a task in the root folder
+      community.windows.win_scheduled_task_stat:
+        name: '{{ item }}' 
       loop:
         - CSP_ScheduledSettlements_06am
         - pivote
-    
-    - name: get content
-      win_shell: 'type C:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\tareaProgramada_{{ ansible_date_time.date }}.json'  
-      register: content
+      register: task_state
 
-    - name: Log de tareas activas
+    - name: Log de tareas
       debug:
-        msg: "{{ content.stdout }}"
+        msg: "{{ task.stdout }}"
 
     - name: bloque para activar tareas
       block:
