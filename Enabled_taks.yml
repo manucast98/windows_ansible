@@ -12,16 +12,16 @@
 
      - name: bloque para activar tareas
        block:
-          - name: Reporte tareas programadas
-            ansible.windows.win_powershell:
-              script: |
-                Enable-ScheduledTask -TaskName '{{ item }}' 
-            loop:
-              - CSP_ScheduledSettlements_06am
-            register: task_post
+         - name: Reporte tareas programadas
+           ansible.windows.win_powershell:
+             script: |
+              Enable-ScheduledTask -TaskName '{{ item }}' 
+           loop:
+            - CSP_ScheduledSettlements_06am
+          register: task_post
 
-          - name: stop processing task
-             meta: end_play
+         - name: stop processing task
+            meta: end_play
    
         when: task_stat.state.status == "TASK_STATE_DISABLED"
 
