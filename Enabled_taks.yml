@@ -10,18 +10,6 @@
         name: pivote
       register: task_state
 
-    - name: Get information about a task in the root folder
-      community.windows.win_scheduled_task_stat:
-        name: '{{ item }}' 
-      loop:
-        - CSP_ScheduledSettlements_06am
-        - pivote
-      register: task
-
-    - name: Log de tareas
-      debug:
-        msg: " El estado de la tarea {{ task.results.invocation.name }} "
-
     - name: bloque para activar tareas
       block:
         - name: activar de tareas
@@ -33,9 +21,13 @@
             - pivote
           register: task_post
 
-        - name: Log de tareas activas
-          debug:
-            msg: "{{ task_post }}"
+        - name: Reporte tareas programadas
+          ansible.windows.win_powershell:
+            script: |
+              Get-ScheduledTask | Where-Object -Property TaskName -match '{{ item }}' | Select-Object -Property TaskName,State | ConvertTo-Json >> D:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\tareaProgramada_{{ ansible_date_time.date }}.json
+          loop:
+            - CSP_ScheduledSettlements_06am
+            - pivote
 
         - name: stop processing task
           meta: end_play
@@ -53,9 +45,13 @@
             - pivote
           register: task_post
 
-        - name: Log de tareas incativas
-          debug:
-            msg: "{{ task_post }}"
+        - name: Reporte tareas programadas
+          ansible.windows.win_powershell:
+            script: |
+              Get-ScheduledTask | Where-Object -Property TaskName -match '{{ item }}' | Select-Object -Property TaskName,State | ConvertTo-Json >> D:\Automatizacion_Ansible\Revision_Ambiente\Estado_Tareas_Programadas\tareaProgramada_{{ ansible_date_time.date }}.json
+          loop:
+            - CSP_ScheduledSettlements_06am
+            - pivote
 
         - name: stop processing task
           meta: end_play
