@@ -23,7 +23,7 @@
         - name: stop processing task
           meta: end_play
    
-      when: task_stat.state.status == "TASK_STATE_DISABLED"
+      when: task_state.state.status == "TASK_STATE_DISABLED"
 
     - name: Log de tareas activas
       debug:
