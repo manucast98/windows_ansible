@@ -27,7 +27,7 @@
 
         - name: Log de tareas activas
           debug:
-            msg: "{{ task_state.state }}"
+            msg: "{{ task_post }}"
 
         - name: stop processing task
           meta: end_play
@@ -47,7 +47,7 @@
 
         - name: Log de tareas incativas
           debug:
-            msg: "{{ task_state.state }}"
+            msg: "{{ task_post }}"
 
         - name: stop processing task
           meta: end_play
