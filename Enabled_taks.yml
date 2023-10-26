@@ -20,7 +20,7 @@
 
     - name: Log de tareas
       debug:
-        msg: "{{ task.stdout }}"
+        msg: "{{ task }}"
 
     - name: bloque para activar tareas
       block:
