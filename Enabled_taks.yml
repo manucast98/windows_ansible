@@ -19,8 +19,8 @@
       register: task
 
     - name: Log de tareas activas
-          debug:
-            msg: "{{ task }}"
+      debug:
+        msg: "{{ task }}"
 
     - name: bloque para activar tareas
       block:
