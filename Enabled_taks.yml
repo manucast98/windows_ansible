@@ -16,7 +16,7 @@
       loop:
         - CSP_ScheduledSettlements_06am
         - pivote
-      register: task_state
+      register: task
 
     - name: Log de tareas
       debug:
