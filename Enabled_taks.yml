@@ -10,10 +10,6 @@
         name: pivote
       register: task_state
 
-    - name: Log de tareas activas
-      debug:
-        msg: "{{ task_state }}"
-
     - name: bloque para activar tareas
       block:
         - name: activar de tareas
