@@ -10,6 +10,10 @@
         name: CSP_ScheduledSettlements_06am
       register: task_state
 
+    - name: Log de tareas activas
+      debug:
+        msg: "{{ task_state.state.status }}"
+
     - name: bloque para activar tareas
       block:
         - name: Reporte tareas programadas
@@ -40,6 +44,4 @@
    
       when: task_state.state.status == "TASK_STATE_READY"
 
-    - name: Log de tareas activas
-      debug:
-        msg: "{{ task_post }}"
+   
