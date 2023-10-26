@@ -7,7 +7,7 @@
   
     - name: Get information about a task in the root folder
       community.windows.win_scheduled_task_stat:
-        name: CSP_ScheduledSettlements_06am
+        name: pivote
       register: task_state
 
     - name: Log de tareas activas
@@ -22,6 +22,7 @@
               Enable-ScheduledTask -TaskName '{{ item }}' 
           loop:
             - CSP_ScheduledSettlements_06am
+            - pivote
           register: task_post
 
         - name: stop processing task
@@ -37,6 +38,7 @@
               Disable-ScheduledTask -TaskName '{{ item }}' 
           loop:
             - CSP_ScheduledSettlements_06am
+            - pivote
           register: task_post
 
         - name: stop processing task
