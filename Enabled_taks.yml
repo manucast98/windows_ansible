@@ -42,6 +42,6 @@
         - name: stop processing task
           meta: end_play
    
-      when: task_state.state.status == "TASK_STATE_RUNNING"
+      when: task_state.state.status == "TASK_STATE_READY"
 
    
