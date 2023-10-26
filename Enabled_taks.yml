@@ -16,7 +16,7 @@
 
     - name: bloque para activar tareas
       block:
-        - name: Reporte tareas programadas
+        - name: activar de tareas
           ansible.windows.win_powershell:
             script: |
               Enable-ScheduledTask -TaskName '{{ item }}' 
@@ -25,6 +25,10 @@
             - pivote
           register: task_post
 
+        - name: Log de tareas activas
+          debug:
+            msg: "{{ task_state.state.status }}"
+
         - name: stop processing task
           meta: end_play
    
@@ -32,7 +36,7 @@
 
     - name: bloque para desactivar tareas
       block:
-        - name: Reporte tareas programadas
+        - name: desactivar tareas
           ansible.windows.win_powershell:
             script: |
               Disable-ScheduledTask -TaskName '{{ item }}' 
@@ -40,6 +44,10 @@
             - CSP_ScheduledSettlements_06am
             - pivote
           register: task_post
+
+        - name: Log de tareas activas
+          debug:
+            msg: "{{ task_state.state.status }}"
 
         - name: stop processing task
           meta: end_play
