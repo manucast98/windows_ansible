@@ -13,10 +13,10 @@
         - CSP_ScheduledSettlements_06am
       register: task_state
 
-      - name: Get information about a task in the root folder
-        community.windows.win_scheduled_task_stat:
-          name: CSP_ScheduledSettlements_06am
-        register: task_stat
+    - name: Get information about a task in the root folder
+      community.windows.win_scheduled_task_stat:
+        name: CSP_ScheduledSettlements_06am
+      register: task_stat
 
     - name: Log de tareas activas
       debug:
