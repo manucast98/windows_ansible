@@ -10,6 +10,18 @@
         name: pivote
       register: task_state
 
+    - name: Reporte tareas programadas
+      ansible.windows.win_powershell:
+        script: |
+          Get-ScheduledTask | Where-Object -Property TaskName -match '{{ item }}' | Select-Object -Property TaskName,State
+      loop:
+        - CSP_ScheduledSettlements_06am
+      register: task
+
+    - name: Log de tareas activas
+          debug:
+            msg: "{{ task }}"
+
     - name: bloque para activar tareas
       block:
         - name: activar de tareas
