@@ -33,7 +33,7 @@
       ansible.windows.win_powershell:
         script: |
           msiexec.exe /qn /i "{{ installation_path }}"
-      ignore_erros: true 
+      ignore_errors: true 
 
     - name: Iniciar el Servicio del Agente Newrelic
       win_service:
