@@ -62,7 +62,3 @@
         - { log_name: Application }
         - { log_name: Security }
         - { log_name: System }
-
-    - name: Reinicio requerido 
-      ansible.windows.win_reboot:
-
