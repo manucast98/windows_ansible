@@ -2,15 +2,38 @@
 - name: Actualización Agente NewRelic
   hosts: all
   become: false
-  gather_facts: false
+  gather_facts: true
   vars_files:
     - group_vars/vars_newrelic.yml
   tasks:
+    - name: Copy file to windows host
+      ansible.builtin.copy:
+        src: "{{ source_server_path }}"
+        dest: "{{ dest_server_path }}"
+        local_follow: yes
+
+    - name: Obtener versión actual del agente 
+      ansible.windows.win_powershell:
+        script: |
+         cd "C:\Program Files\New Relic\newrelic-infra\"
+         .\newrelic-infra.exe --version
+      register: getOldVersion
+
+    - name: Output Versión Actual del Agente
+      debug:
+        msg: |
+          "La versión actual del agente es: {{ getOldVersion.output }}...... En servidor: {{ ansible_facts['hostname'] }}"
+
+    - name: Detener el Servicio del Agente Newrelic
+      win_service:
+        name: newrelic-infra
+        state: stopped
 
     - name: Instalación última versión
       ansible.windows.win_powershell:
         script: |
           msiexec.exe /qn /i "{{ installation_path }}"
+      ignore_erros: true 
 
     - name: Iniciar el Servicio del Agente Newrelic
       win_service:
@@ -19,7 +42,20 @@
         start_mode: auto
       register: state_service
 
+    - name: Obtener nueva versión del agente 
+      ansible.windows.win_powershell:
+        script: |
+         cd "C:\Program Files\New Relic\newrelic-infra\"
+         .\newrelic-infra.exe --version
+      register: getNewVersion
+
+    - name: Output nueva versión del agente
+      debug:
+        msg: |
+          "La nueva versión del agente es: {{ getNewVersion.output }}...... En servidor: {{ ansible_facts['hostname'] }}"
+
     - name: Verificación del estado del servicio
       debug:
         msg: |
           "El estado del servicio es: {{ state_service.state }}" 
+
