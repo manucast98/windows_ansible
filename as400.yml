@@ -9,4 +9,4 @@
   
     - name: Return factd
       ibm.power_ibmi.ibmi_cl_command:
-        cmd: 'uname'
+        cmd: uname
