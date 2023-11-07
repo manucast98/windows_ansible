@@ -5,7 +5,7 @@
     ansible_python_interpreter: /QOpenSys/pkgs/bin/python3
   connection: ssh
   gather_facts: true
-  tasks
+  tasks:
   
     - name: Return factd
       ibm.power_ibmi.ibmi_cl_command:
