@@ -4,6 +4,8 @@
   vars:
     ansible_python_interpreter: /QOpenSys/pkgs/bin/python3
   connection: ssh
+  collections:
+    - ibm.power_ibmi
   gather_facts: true
   tasks:
   
