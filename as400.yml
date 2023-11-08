@@ -8,7 +8,14 @@
     - ibm.power_ibmi
   gather_facts: true
   tasks:
+    - block:
+      - name: Display a system value
+        ibmi_sysval:
+          sysvalue:
+            - {'name':'qccsid'}
+        register: dspsysval_ccsid_result
   
-    - name: Return factd
-      ibm.power_ibmi.ibmi_cl_command:
-        cmd: uname
+      - name: Display the returned parameters
+        debug:
+          msg: "{{ dspsysval_ccsid_result }}"
+      
