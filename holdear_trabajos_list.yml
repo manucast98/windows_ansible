@@ -3,7 +3,7 @@
   hosts: all
   vars:
     ansible_python_interpreter: /QOpenSys/pkgs/bin/python3
-    JOB_NAME: CMC500
+    JOB_NAME: PRUEBA
   collections:
     - ibm.power_ibmi
   connection: ssh
