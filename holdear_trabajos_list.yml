@@ -25,7 +25,13 @@
       ibm.power_ibmi.ibmi_job:
         name: "419809/QSECOFR/CMC499"
       register: holded_job_status
-      
+
+    - name: List job
+      ibm_cl_command:
+        cmd: system "wrkactjob job(CMC499)"
+        joblog: false
+      register: holded_job_status  
+        
     - name: ESTADO TAREA 
       debug:
         var: holded_job_status
