@@ -17,7 +17,7 @@
 
     - name: Get status of a list of jobs
       ibm.power_ibmi.ibmi_job:
-        user: "WANGYUN"
+        user: "QSECOFR"
         type: "*BATCH"
       register: holded_job_status
 
