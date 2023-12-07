@@ -27,9 +27,8 @@
       register: holded_job_status
 
     - name: List job
-      ibm_cl_command:
+      ibm.power_ibmi.ibmi_cl_command:
         cmd: system "wrkactjob job(CMC499)"
-        joblog: false
       register: holded_job_status  
         
     - name: ESTADO TAREA 
