@@ -7,5 +7,5 @@
       lowlydba.sqlserver.backup:
         sql_instance: PuebaVM/Master
         database: Sales
-        type: full
-        file_count: 8
+        type: log
+       # file_count: 8
