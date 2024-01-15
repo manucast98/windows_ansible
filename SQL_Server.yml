@@ -5,7 +5,7 @@
   tasks:
     - name: Create striped full database backup in default dir
       lowlydba.sqlserver.backup:
-      sql_instance: PruebaVM
-      database: Sales
-      type: full
-      file_count: 8
+        sql_instance: PruebaVM
+        database: Sales
+        type: full
+        file_count: 8
