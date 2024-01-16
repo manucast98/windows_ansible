@@ -1,11 +1,9 @@
 ---
-- name: Crear backup slq
+- name: Crear backup Base de Datos
   hosts: all
   become: false
   tasks:
-    - name: Create striped full database backup in default dir
-      lowlydba.sqlserver.backup:
-        sql_instance: PruebaVM
-        database: Sales
-        type: full
-        file_count: 8
+    - name: Create backup DataBase 
+      ansible.windows.win_powershell:
+        script: |
+           BAckup-SqlDatabase -ServerInstance "PruebaVM" -Database "Sales" -BackupAction Database
