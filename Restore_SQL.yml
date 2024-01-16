@@ -6,4 +6,4 @@
     - name: Create backup DataBase 
       ansible.windows.win_powershell:
         script: |
-          Restore-SqlDatabase -ServerInstance "PRUEBA" -Database "Sales" -BackupFile "C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\Backup\Sales.bak"
+          Restore-SqlDatabase -ServerInstance "PRUEBA" -Database "Sales" -BackupFile "C:\Sql\Sales.bak"
