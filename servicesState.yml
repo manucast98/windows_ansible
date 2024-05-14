@@ -1,0 +1,47 @@
+# Get Windows Active Windows Services 
+# Generate a Report in .json file to specific directory
+# Here you can add the "PATH" needed
+---
+- name: Get Windows Services Status with Log file
+  hosts: all
+  gather_facts: true
+  vars:
+    winPath: 'C:\SomePath\'
+  tasks:
+
+    - name: Create directory if does not exists
+      ansible.windows.win_file:
+        path: "{{ winPath }}"
+        state: directory
+
+    - name: Reporte Servicios Activos
+      ansible.windows.win_powershell:
+        script: |
+            $services = New-Object System.Collections.ArrayList
+
+            foreach ($service in (Get-Service | Where-Object -Property Name -match "{{ item }}" | Where-Object -Property Status -match "Running")){
+                $services.Add(@{"Name"= $service.Name; "DisplayName" = $service.DisplayName; "Status" = $service.Status.ToString()}) | Out-Null
+            }
+
+            $payload = @{
+                metrics = @($services)
+            } | ConvertTo-Json
+            
+            echo $payload >> "{{ winPath }}_{{ ansible_date_time.date }}.json"
+      loop: "{{ services }}"
+
+    - name: Reporte Servicios Detenidos
+      ansible.windows.win_powershell:
+        script: |
+            $services = New-Object System.Collections.ArrayList
+
+            foreach ($service in (Get-Service | Where-Object -Property Name -match "{{ item }}" | Where-Object -Property Status -match "Stopped")){
+                $services.Add(@{"Name"= $service.Name; "DisplayName" = $service.DisplayName; "Status" = $service.Status.ToString()}) | Out-Null
+            }
+
+            $payload = @{
+                metrics = @($services)
+            } | ConvertTo-Json
+            
+            echo $payload >> echo $payload >> "{{ winPath }}_{{ ansible_date_time.date }}.json"
+      loop: "{{ services }}"
